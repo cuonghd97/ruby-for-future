@@ -4,9 +4,8 @@ class BlogsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    puts post_params
     if @post.save
-      redirect_to @post
+      redirect_to :root
     else
       render 'new'
     end
@@ -16,7 +15,29 @@ class BlogsController < ApplicationController
     @post = Post.all
   end
 
+  def show
+    @post = Post.find(params[:id])
+  end
+
   def new
+    @post = Post.new
+  end
+
+  def edit
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    @post.update_attributes(post_params)
+    redirect_to :root
+  end
+
+  def destroy
+    @post = Post.find(params[:id])
+    @post.destroy
+
+    redirect_to blogs_path
   end
 
   private

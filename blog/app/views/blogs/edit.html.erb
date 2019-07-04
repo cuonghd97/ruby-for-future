@@ -1,4 +1,6 @@
-<%= form_for @post, url: blogs_path do |form| %>
+<% @page_title = 'Edit' %>
+<h2>Edit</h2>
+<%= form_for @post, url: blog_path(@post) do |form| %>
 <p>
     <%= form.label :title %>
     <%= form.text_field :title %>

@@ -1,2 +1,18 @@
 <% @page_title = 'Index' %>
-<h1>Index</h1>
+<h1>Show blog</h1>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>*<th>
+    </tr>
+    <% @post.each do |p| %>
+    <tr>
+        <td><%= p.title %></td>
+        <td>
+            <%= link_to 'Show', blog_path(p) %>
+            <%= link_to 'Edit', edit_blog_path(p) %>
+            <%= link_to 'Delete', blog_path(p), method: :delete %>
+        </td>
+    </tr>
+    <% end %>
+</table>
