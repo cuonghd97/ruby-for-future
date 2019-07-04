@@ -4,11 +4,16 @@ class BlogsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
+    puts post_params
     if @post.save
       redirect_to @post
     else
       render 'new'
     end
+  end
+
+  def index
+    @post = Post.all
   end
 
   def new
