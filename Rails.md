@@ -173,3 +173,14 @@ Sẽ render nội dụng của 1 file có tên `_menu.html.erb` lên view
 > Chú ý: tên của `partial` phải bắt đầu bằng dấu `_`  
 Cũng có thể render `partial` từ folder khác:  
 `<%= render "shared/menu" %>`  
+
+## Thêm bootstrap vào Rails project
+`gem 'bootstrap-sass', '3.4.1'` thêm dòng này vào `Gemfile` phiên bản hiện tại là `3.4.1` có thể tùy chọn phiên bản  
+`bundle install` để cái các dependencies còn thiếu  
+Tạo một file `custom.scss`: `touch app/assets/stylesheets/custom.scss`  
+có nội dung:  
+```
+@import "bootstrap-sprockets";
+@import "bootstrap";
+```  
+sau đó khởi động lại rails server.  
