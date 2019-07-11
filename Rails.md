@@ -184,3 +184,98 @@ có nội dung:
 @import "bootstrap";
 ```  
 sau đó khởi động lại rails server.  
+
+## Active record callback
+Active record cung cấp các hook vào vòng đời của đối tượng này để bạn có thể kiểm soát ứng dụng và dữ liệu của chúng  
+Để dùng các callback bạn phải khai báo chúng:  
+```
+
+class User < ApplicationRecord
+  validates :login, :email, presence: true
+ 
+  before_validation :ensure_login_has_a_value
+ 
+  private
+    def ensure_login_has_a_value
+      if login.nil?
+        self.login = email unless email.blank?
+      end
+    end
+end
+```  
+Các callback có sẵn:  
+Callback create an object:  
++ before_validation
++ after_validation
++ before_save
++ around_save
++ before_create
++ around_create
++ after_create
++ after_save
++ after_commit/after_rollback
+
+Callback update an object:  
++ before_validation
++ after_validation
++ before_save
++ around_save
++ before_update
++ around_update
++ after_update
++ after_save
++ after_commit/after_rollback
+
+Callback destroy an object:  
++ before_destroy
++ around_destroy
++ after_destroy
++ after_commit/after_rollback  
+
+`after_initialize` và `after_find`:  
+`after_initialize` sẽ được gọi khi một đối tượng Active Record được tạo. Nó cũng được dùng để tránh ghi đè trực tiếp phương thức khởi tạo Active Record.
+`after_find` được gọi khi một Active Record load một bản ghi từ database.  
+```
+class User < ApplicationRecord
+  after_initialize do |user|
+    puts "You have initialized an object!"
+  end
+ 
+  after_find do |user|
+    puts "You have found an object!"
+  end
+end
+ 
+>> User.new
+You have initialized an object!
+=> #<User id: nil>
+ 
+>> User.first
+You have found an object!
+You have initialized an object!
+=> #<User id: 1>
+```  
+
+### Relation callback
+```
+
+class User < ApplicationRecord
+  has_many :articles, dependent: :destroy
+end
+ 
+class Article < ApplicationRecord
+  after_destroy :log_destroy_action
+ 
+  def log_destroy_action
+    puts 'Article destroyed'
+  end
+end
+ 
+>> user = User.first
+=> #<User id: 1>
+>> user.articles.create!
+=> #<Article id: 1, user_id: 1>
+>> user.destroy
+Article destroyed
+=> #<User id: 1>
+```  
